@@ -33,4 +33,31 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
         ], 201);
     }
+
+    //for login
+    public function login(Request $request)
+    {
+        $validated = $request->validate([
+            'email'    => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
+        // Generate token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'User logged in successfully',
+            'token'   => $token,
+        ], 200);
+    }
 }
