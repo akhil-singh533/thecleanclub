@@ -1,309 +1,122 @@
 <template>
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      
-      <!-- Brand & Header -->
-      <div class="auth-header">
-        <div class="brand-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>The Clean Club</span>
-        </div>
-        <h2>Admin Console</h2>
-        <p>Sign in to manage detailing bays and station operations</p>
-      </div>
+  <main class="min-h-screen overflow-hidden bg-[#eef5f9] text-slate-900">
+    <div class="mx-auto grid min-h-screen max-w-[1440px] lg:grid-cols-[1.08fr_0.92fr]">
+      <!-- Brand panel -->
+      <section class="relative hidden overflow-hidden bg-[#09243b] px-12 py-10 text-white lg:flex lg:flex-col lg:justify-between xl:px-20">
+        <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-cyan-400/15 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-32 h-[28rem] w-[28rem] rounded-full bg-blue-500/15 blur-3xl"></div>
 
-      <!-- Form -->
-      <form @submit.prevent="handleLogin" class="auth-form">
-        
-        <!-- Field 1: Identifier -->
-        <div class="form-group">
-          <label>Email or Mobile</label>
-          <input
-            v-model.trim="formData.identifier"
-            type="text"
-            placeholder="e.g. 9876543210 or admin@cleanclub.in"
-            required
-          />
-        </div>
-
-        <!-- Field 2: Password -->
-        <div class="form-group">
-          <div class="label-row">
-            <label>Password</label>
-            <a href="#" class="forgot-link">Forgot?</a>
+        <div class="relative flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-300 text-[#09243b] shadow-lg shadow-cyan-300/20">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 14h18M5.5 14l1.2-4A2 2 0 0 1 8.6 8.5h6.8a2 2 0 0 1 1.9 1.5l1.2 4M6 18h.01M18 18h.01M5 14v3a1 1 0 0 0 1 1h1m12-4v3a1 1 0 0 1-1 1h-1" />
+              <path stroke-linecap="round" d="M8 5.5h.01M12 4h.01M16 5.5h.01" />
+            </svg>
           </div>
-          <div class="password-wrapper">
-            <input
-              v-model="formData.password"
-              :type="showPassword ? 'text' : 'password'"
-              placeholder="••••••••"
-              required
-            />
-            <button
-              type="button"
-              @click="showPassword = !showPassword"
-              class="toggle-btn"
-            >
-              {{ showPassword ? 'Hide' : 'Show' }}
-            </button>
+          <span class="text-lg font-semibold tracking-tight">The Clean Club</span>
+        </div>
+
+        <div class="relative max-w-lg py-16">
+          <p class="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Station management</p>
+          <h1 class="text-5xl font-bold leading-[1.08] tracking-tight xl:text-6xl">A smoother day starts with a cleaner station.</h1>
+          <p class="mt-7 max-w-md text-base leading-7 text-slate-300">Keep your bays moving, your team aligned, and every customer’s car looking its best.</p>
+
+          <div class="mt-12 flex items-center gap-3 text-sm text-slate-300">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m5 12 4 4L19 6" /></svg>
+            </span>
+            Your station workspace is ready
           </div>
         </div>
 
-        <!-- Field 3: Station Role -->
-        <!-- <div class="form-group">
-          <label>Station Access Role</label>
-          <select v-model="formData.role">
-            <option value="owner_admin">Owner / Master Admin</option>
-            <option value="manager">Bay Manager / Supervisor</option>
-          </select>
-        </div> -->
-
-        <!-- Remember Me -->
-        <div class="checkbox-row">
-          <label class="checkbox-label">
-            <input type="checkbox" v-model="formData.rememberMe" />
-            <span>Remember this device</span>
-          </label>
+        <div class="relative flex items-center justify-between text-xs text-slate-400">
+          <span>Built for busy wash teams</span>
+          <span>v1.0</span>
         </div>
+      </section>
 
-        <!-- Submit Button -->
-        <button type="submit" :disabled="loading" class="submit-btn">
-          {{ loading ? 'Authenticating...' : 'Sign In to Station' }}
-        </button>
+      <!-- Login panel -->
+      <section class="flex min-h-screen items-center justify-center px-5 py-10 sm:px-10">
+        <div class="w-full max-w-md">
+          <div class="mb-10 flex items-center gap-3 lg:hidden">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#09243b] text-cyan-300">
+              <span class="text-lg font-bold">C</span>
+            </div>
+            <span class="text-lg font-semibold tracking-tight">The Clean Club</span>
+          </div>
 
-      </form>
+          <div class="rounded-[2rem] border border-white/80 bg-white p-7 shadow-[0_24px_70px_rgba(15,23,42,0.10)] sm:p-10">
+            <div class="mb-10 flex flex-col gap-3">
+              <p class="text-xs font-bold uppercase tracking-[0.2em] text-cyan-600">Welcome back</p>
+              <h2 class="text-4xl font-bold leading-[1.08] tracking-tight text-slate-950">Sign in to your station</h2>
+              
+            </div>
 
-      <!-- Footer Note -->
-      <div class="auth-footer">
-        Detailing Hub Station • Internal Terminal
-      </div>
+            <form class="flex flex-col gap-8" @submit.prevent="login">
+              <div class="pt-2">
+                <label for="email" class="mb-3 block text-sm font-medium text-slate-700">Work email</label>
+                <input
+                  id="email"
+                  v-model.trim="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@cleanclub.in"
+                  required
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-cyan-500 focus:bg-white focus:ring-4 focus:ring-cyan-500/10"
+                />
+              </div>
 
+              <div>
+                <div class="mb-3 flex items-center justify-between">
+                  <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+                  <a href="#" class="text-xs font-semibold text-cyan-600 transition hover:text-cyan-700">Forgot password?</a>
+                </div>
+                <div class="relative">
+                  <input
+                    id="password"
+                    v-model="password"
+                    :type="showPassword ? 'text' : 'password'"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-4 pr-16 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-cyan-500 focus:bg-white focus:ring-4 focus:ring-cyan-500/10"
+                  />
+                  <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-1.5 py-1 text-xs font-semibold text-slate-400 transition hover:bg-slate-100 hover:text-slate-700" @click="showPassword = !showPassword">
+                    {{ showPassword ? 'Hide' : 'Show' }}
+                  </button>
+                </div>
+              </div>
+
+              <label class="flex cursor-pointer items-center gap-2 pt-2 text-sm text-slate-500">
+                <input v-model="rememberMe" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500" />
+                Remember this device
+              </label>
+
+              <button
+                type="submit"
+                :disabled="loading"
+                class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#09243b] px-4 py-4 text-sm font-semibold text-white shadow-lg shadow-[#09243b]/15 transition hover:bg-[#123753] focus:outline-none focus:ring-4 focus:ring-[#09243b]/15 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <svg v-if="loading" class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" /><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4Z" /></svg>
+                {{ loading ? 'Signing in…' : 'Sign in to station' }}
+              </button>
+
+              <p v-if="message" class="rounded-xl bg-rose-50 px-4 py-3 text-center text-sm text-rose-600">{{ message }}</p>
+            </form>
+
+            <p class="mt-8 text-center text-xs leading-5 text-slate-400">Need access? Contact your station administrator.</p>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
+import { useLogin } from '@/js/login'
 
 const showPassword = ref(false)
-const loading = ref(false)
-
-const formData = reactive({
-  identifier: '',
-  password: '',
-  role: 'owner_admin',
-  rememberMe: false
-})
-
-const handleLogin = () => {
-  loading.value = true
-  setTimeout(() => {
-    loading.value = false
-    console.log('Login credentials:', formData)
-  }, 700)
-}
+const rememberMe = ref(false)
+const { email, password, message, loading, login } = useLogin()
 </script>
-
-<style scoped>
-.auth-wrapper {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f1f5f9;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-  padding: 36px 32px;
-  box-sizing: border-box;
-}
-
-.auth-header {
-  margin-bottom: 26px;
-}
-
-.brand-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #0284c7;
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-.brand-badge svg {
-  width: 16px;
-  height: 16px;
-}
-
-.auth-header h2 {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.3px;
-}
-
-.auth-header p {
-  margin: 6px 0 0 0;
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.4;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #334155;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.forgot-link {
-  font-size: 12px;
-  color: #0284c7;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  height: 42px;
-  padding: 0 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background-color: #f8fafc;
-  color: #0f172a;
-  font-size: 14px;
-  box-sizing: border-box;
-  outline: none;
-  transition: all 0.15s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  background-color: #ffffff;
-  border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
-}
-
-.password-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.password-wrapper input {
-  padding-right: 56px;
-}
-
-.toggle-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 12px;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  padding: 4px 6px;
-}
-
-.toggle-btn:hover {
-  color: #0f172a;
-}
-
-.checkbox-row {
-  display: flex;
-  align-items: center;
-  margin-top: 2px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #475569;
-  cursor: pointer;
-  user-select: none;
-}
-
-.checkbox-label input {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.submit-btn {
-  width: 100%;
-  height: 44px;
-  margin-top: 6px;
-  background-color: #0f172a;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.submit-btn:hover {
-  background-color: #1e293b;
-}
-
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.auth-footer {
-  margin-top: 24px;
-  padding-top: 18px;
-  border-top: 1px solid #f1f5f9;
-  text-align: center;
-  font-size: 12px;
-  color: #94a3b8;
-}
-</style>
